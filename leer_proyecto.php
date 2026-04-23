@@ -7,13 +7,16 @@ Abre tu terminal en C:\xampp\htdocs\miPHP.
 Ejecuta el comando:
 
 Bash
+###############
 php leer_proyecto.php
- *
+#######################
  *
 Tip Pro: Si quieres guardar todo eso en un solo archivo de texto para leerlo luego o enviarlo, usa el redireccionamiento de la terminal:
 
 Bash
+###############
 php leer_proyecto.php > resumen_codigo.txt
+##########################
 ¿Por qué este script y no otro?
 Recursividad: Entra en todas las subcarpetas (Models, Controllers, etc.) automáticamente.
 

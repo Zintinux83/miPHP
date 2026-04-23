@@ -2,11 +2,11 @@
 namespace App\Models;
 
 use App\Database\Connection;
-use PDO;
 
 class Usuario {
 
-    public static function todos() {
+    public static function leerTodos(): array
+    {
         $db = Connection::get();
         $stmt = $db->query("SELECT * FROM usuarios");
         return $stmt->fetchAll();
