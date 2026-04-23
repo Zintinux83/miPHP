@@ -14,9 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Usuario::crear($_POST['nombre_usuario']);
     }
 
-    // Si enviamos el formulario de TAREA
+    // Sí enviamos el formulario de TAREA
     if (isset($_POST['tarea_desc']) && isset($_POST['id_usuario'])) {
         Tarea::crear($_POST['tarea_desc'], $_POST['id_usuario']);
+    }
+
+    if (isset($_POST['eliminar_id'])) {
+        Tarea::eliminar($_POST['eliminar_id']);
+        header("Location: index.php");
+        exit;
     }
 
     header("Location: index.php");
@@ -25,6 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $listaUsuarios = Usuario::leerTodos();
 $listaTareas = Tarea::leerTodas(); // Esto traerá todas las tareas de la tabla
+
+$usuarioSeleccionado = $_GET['ver_usuario'] ?? null;
+
+if ($usuarioSeleccionado) {
+    $listaTareas = Tarea::buscarPorUsuario($usuarioSeleccionado);
+    $nombreVista = "Tareas de " . $listaUsuarios[array_search($usuarioSeleccionado, array_column($listaUsuarios, 'id'))]['nombre'];
+} else {
+    $listaTareas = Tarea::leerTodas();
+    $nombreVista = "Listado General de Tareas";
+}
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +104,42 @@ $listaTareas = Tarea::leerTodas(); // Esto traerá todas las tareas de la tabla
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
+<div class="seccion">
+    <h2><?= $nombreVista ?></h2>
+    <?php if ($usuarioSeleccionado): ?>
+        <a href="index.php">⬅ Ver todas las tareas</a>
+    <?php endif; ?>
+
+    <div style="margin-top: 20px;">
+        <?php foreach ($listaTareas as $t): ?>
+            <div class="tarea-item">
+                <strong><?= htmlspecialchars($t['nombre']) ?></strong>
+                <br>
+                <small>
+                    Responsable: <?= htmlspecialchars($t['dueño'] ?? 'Usuario '.$t['usuario_id']) ?>
+                </small>
+
+                <form method="POST" style="display:inline; margin-left: 10px;">
+                    <input type="hidden" name="eliminar_id" value="<?= $t['id'] ?>">
+                    <button type="submit" onclick="return confirm('¿Seguro?')">🗑 Borrar</button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!--
+    <h2>Usuarios registrados (Haz clic para filtrar):</h2>
+    <ul>
+        <?php foreach ($listaUsuarios as $u): ?>
+            <li>
+                <?= htmlspecialchars($u['nombre']) ?>
+                <a href="index.php?ver_usuario=<?= $u['id'] ?>">[Ver sus tareas]</a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    -->
+<div>
 
 </body>
 </html>
