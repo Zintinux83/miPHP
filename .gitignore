@@ -1,0 +1,5 @@
+# Archivos de configuración de entorno
+# .env <--- Descomenta si quieres ignorarlo (¡Recomendado!)
+
+# Carpeta de dependencias de Composer
+/vendor/
