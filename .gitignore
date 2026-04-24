@@ -4,4 +4,7 @@
 # Carpeta de dependencias de Composer
 /vendor/
 
+/public/uploads/perfiles/*
+!/public/uploads/perfiles/default.png
+
 resumen_codigo.txt

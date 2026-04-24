@@ -18,11 +18,38 @@
 <body>
 
 <div class="seccion">
+    <h1><b>PROYECTO DE GESTIÓN DE USUARIO-TAREA EN PHP</b></h1>
+</div>
+
+<div class="seccion">
     <h2>1. Crear Usuario</h2>
     <form method="POST">
         <input type="text" name="nombre_usuario" minlength="3" maxlength="20" placeholder="Nombre..." required>
         <button type="submit">Guardar Usuario</button>
     </form>
+</div>
+
+<div class="seccion">
+    <h2>Usuarios registrados:</h2>
+    <ul>
+        <?php foreach ($listaUsuarios as $u): ?>
+            <li style="margin-bottom: 15px; list-style: none; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <img src="uploads/perfiles/<?= $u['foto_perfil'] ?? 'default.png' ?>"
+                     width="40" height="40"
+                     style="border-radius: 50%; object-fit: cover; vertical-align: middle;">
+
+                <strong><?= htmlspecialchars($u['nombre']) ?></strong>
+
+                <a href="usuario_tareas.php?id=<?= $u['id'] ?>">[Ver tareas]</a>
+
+                <form method="POST" enctype="multipart/form-data" style="display:inline; margin-left: 10px;">
+                    <input type="hidden" name="id_usuario_foto" value="<?= $u['id'] ?>">
+                    <input type="file" name="foto" required style="font-size: 0.8em;">
+                    <button type="submit" style="font-size: 0.8em;">Actualizar Foto</button>
+                </form>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 </div>
 
 <div class="seccion">

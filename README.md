@@ -185,3 +185,12 @@ He decidido separar la lógica en una capa de **Servicios** por tres razones fun
 Ahora para ser más profesional, ya que la fecha es algo que se incluye en el commit y se hace redundante ponerlo, entonces voy a poner solo un prefijo y una descripción en imperativo y en minúsculas para mantener claro lo que hice y que cambios hay en este commit.
 
 ---
+### Añadimos un cargado de imagen para que los usuarios tengan una foto de perfil:
+Ejecutamos sobre el MySQL la siguiente consulta:
+```sql
+ALTER TABLE usuarios ADD COLUMN foto_perfil VARCHAR(255) DEFAULT 'default.png';
+```
+La "Carpeta de Almacenamiento"
+Por seguridad y orden, las imágenes deben vivir en la carpeta pública (para que el navegador las vea), pero fuera de los scripts PHP.
+Crear la carpeta public/uploads/.
+Crear la carpeta public/uploads/perfiles/.

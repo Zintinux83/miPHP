@@ -24,4 +24,11 @@ class Usuario {
         // Esto limpia el string y evita ataques SQL Injection
         return $stmt->execute(['nom' => $nombre]);
     }
+
+    public static function actualizarFoto(int $id, string $rutaImagen): bool
+    {
+        $db = Connection::get();
+        $stmt = $db->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
+        return $stmt->execute([$rutaImagen, $id]);
+    }
 }
