@@ -1,0 +1,119 @@
+.tarea-item { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 4px solid #3498db; }
+
+/* fondo ################## */
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5; /* Gris azulado muy suave */
+    color: #1c1e21;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    line-height: 1.6;
+}
+
+/* secciones ################# */
+.seccion {
+    background: #ffffff;
+    border: none; /* Quitamos el borde clásico */
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 16px; /* Bordes muy redondeados */
+
+    /* Esta sombra es la que da el toque "premium" */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto al pasar el ratón por encima de la tarjeta */
+.seccion:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Los Inputs y Botones ######################## */
+input[type="text"], select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #3498db;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+/*estilos de imagenes ################### */
+img {
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* ESTILOS DE TÍTULOS Y LETRAS ######################## */
+.header-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.main-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.main-title .highlight {
+    color: #3498db; /* Azul profesional */
+    position: relative;
+}
+
+/* Una pequeña línea debajo de la palabra "Tareas" */
+.main-title .highlight::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    bottom: -5px;
+    left: 0;
+    background: #3498db;
+    border-radius: 2px;
+}
+
+.subtitle {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    font-weight: normal;
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+.emoji {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto divertido: el cohete se mueve al pasar el ratón */
+.header-container:hover .emoji {
+    transform: translateY(-10px) rotate(15deg);
+}

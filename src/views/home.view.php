@@ -9,16 +9,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Tareas</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; }
-        .seccion { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
-        .tarea-item { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 4px solid #3498db; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="seccion">
-    <h1><b>PROYECTO DE GESTIÓN DE USUARIO-TAREA EN PHP</b></h1>
+<div class="header-container">
+    <h1 class="main-title">
+        <span class="emoji">🚀</span>
+        Gestión de <span class="highlight">Tareas</span>
+        <span class="subtitle">v2.0 MVC</span>
+    </h1>
 </div>
 
 <div class="seccion">
@@ -77,8 +77,6 @@
         <button type="submit">Crear Tarea</button>
     </form>
 </div>
-
-<hr>
 
 <div class="seccion">
     <h2><?= htmlspecialchars($nombreVista) ?></h2>

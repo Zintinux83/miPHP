@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tareas de <?= htmlspecialchars($nombreUsuario) ?></title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
         body { font-family: sans-serif; max-width: 600px; margin: 40px auto; line-height: 1.6; }
         .btn-volver { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; }
