@@ -1,119 +1,227 @@
-.tarea-item { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 4px solid #3498db; }
+/* 1. VARIABLES Y RESET ######################## */
+:root {
+    --primary: #4f46e5;       /* Índigo moderno */
+    --primary-hover: #4338ca;
+    --bg-body: #e0e8f4;       /* Gris neutro muy limpio */
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --radius: 12px;
+}
 
-/* fondo ################## */
+* { box-sizing: border-box; }
+
 body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f0f2f5; /* Gris azulado muy suave */
-    color: #1c1e21;
-    max-width: 900px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    max-width: 850px;
     margin: 0 auto;
-    padding: 40px 20px;
-    line-height: 1.6;
+    padding: 20px;
+    line-height: 1.5;
 }
 
-/* secciones ################# */
-.seccion {
-    background: #ffffff;
-    border: none; /* Quitamos el borde clásico */
-    padding: 25px;
+/* 2. HEADER COMPACTO (SLIM) ######################## */
+.header-wrapper {
     margin-bottom: 30px;
-    border-radius: 16px; /* Bordes muy redondeados */
-
-    /* Esta sombra es la que da el toque "premium" */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Efecto al pasar el ratón por encima de la tarjeta */
-.seccion:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-}
-
-/* Los Inputs y Botones ######################## */
-input[type="text"], select {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-input[type="text"]:focus {
-    border-color: #3498db;
-}
-
-button {
-    background-color: #3498db;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-/*estilos de imagenes ################### */
-img {
-    border: 3px solid white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* ESTILOS DE TÍTULOS Y LETRAS ######################## */
-.header-container {
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 15px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.main-title {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-}
-
-.main-title .highlight {
-    color: #3498db; /* Azul profesional */
     position: relative;
 }
 
-/* Una pequeña línea debajo de la palabra "Tareas" */
-.main-title .highlight::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 4px;
-    bottom: -5px;
-    left: 0;
-    background: #3498db;
-    border-radius: 2px;
+.header-container {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-sm);
+}
+
+.main-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.title-text {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.highlight {
+    color: var(--primary);
+    background: linear-gradient(to right, var(--primary), #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.emoji-container {
+    font-size: 1.8rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 .subtitle {
-    display: block;
-    font-size: 0.9rem;
-    color: #7f8c8d;
-    font-weight: normal;
-    margin-top: 10px;
-    letter-spacing: 2px;
-}
-
-.emoji {
     display: inline-block;
-    transition: transform 0.3s ease;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #f1f5f9;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-top: 5px;
 }
 
-/* Efecto divertido: el cohete se mueve al pasar el ratón */
-.header-container:hover .emoji {
-    transform: translateY(-10px) rotate(15deg);
+/* 3. CONTENEDORES Y SECCIONES ######################## */
+.seccion {
+    background: var(--bg-card);
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: var(--radius);
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-sm);
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 4. FORMULARIOS E INPUTS ######################## */
+form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+input[type="text"], select {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    ring: 3px rgba(79, 70, 229, 0.1);
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Botón de borrar */
+button[onclick*="confirm"] {
+    background-color: #ef4444;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+button[onclick*="confirm"]:hover {
+    background-color: #dc2626;
+}
+
+/* 5. LISTADOS (USUARIOS Y TAREAS) ######################## */
+ul { padding: 0; margin: 0; }
+
+li {
+    background: #f8f9fa;
+    margin-bottom: 12px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    display: flex;       /* La magia ocurre aquí */
+    align-items: center; /* Alinea verticalmente al centro */
+    gap: 15px;           /* Espacio entre elementos */
+    border: 1px solid #eef2f6;
+}
+
+/* Para que el nombre del usuario crezca y empuje el formulario al final */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+/* Ajuste específico para el formulario de foto dentro del li */
+li form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0; /* Quita márgenes que puedan romper la línea */
+}
+
+/* Hacer el input de archivo más discreto */
+li input[type="file"] {
+    font-size: 0.8rem;
+    max-width: 180px;
+}
+
+.tarea-item {
+    background: var(--bg-card);
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.tarea-item:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+}
+
+/* 6. IMÁGENES Y OTROS ######################## */
+img {
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: var(--shadow-sm);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover { text-decoration: underline; }
+
+.empty-state {
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
+    padding: 20px;
 }

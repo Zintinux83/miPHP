@@ -13,12 +13,19 @@
 </head>
 <body>
 
-<div class="header-container">
-    <h1 class="main-title">
-        <span class="emoji">🚀</span>
-        Gestión de <span class="highlight">Tareas</span>
-        <span class="subtitle">v2.0 MVC</span>
-    </h1>
+<div class="header-wrapper">
+    <div class="header-glow"></div>
+    <div class="header-container">
+        <h1 class="main-title">
+            <span class="emoji-container">
+                <span class="emoji">🚀</span>
+            </span>
+            <div class="title-text">
+                Gestión de <span class="highlight">Tareas</span>
+            </div>
+            <span class="subtitle">Control Panel v2.0 • MVC Architecture</span>
+        </h1>
+    </div>
 </div>
 
 <div class="seccion">
@@ -30,22 +37,21 @@
 </div>
 
 <div class="seccion">
-    <h2>Usuarios registrados:</h2>
+    <h2>Usuarios registrados</h2>
     <ul>
         <?php foreach ($listaUsuarios as $u): ?>
-            <li style="margin-bottom: 15px; list-style: none; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <img src="uploads/perfiles/<?= $u['foto_perfil'] ?? 'default.png' ?>"
-                     width="40" height="40"
-                     style="border-radius: 50%; object-fit: cover; vertical-align: middle;">
+            <li>
+                <div class="user-info">
+                    <img src="uploads/perfiles/<?= $u['foto_perfil'] ?? 'default.png' ?>"
+                         width="40" height="40" alt="Perfil">
+                    <strong><?= htmlspecialchars($u['nombre']) ?></strong>
+                    <a href="usuario_tareas.php?id=<?= $u['id'] ?>" class="btn-link">[Ver tareas]</a>
+                </div>
 
-                <strong><?= htmlspecialchars($u['nombre']) ?></strong>
-
-                <a href="usuario_tareas.php?id=<?= $u['id'] ?>">[Ver tareas]</a>
-
-                <form method="POST" enctype="multipart/form-data" style="display:inline; margin-left: 10px;">
+                <form method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_usuario_foto" value="<?= $u['id'] ?>">
-                    <input type="file" name="foto" required style="font-size: 0.8em;">
-                    <button type="submit" style="font-size: 0.8em;">Actualizar Foto</button>
+                    <input type="file" name="foto" required>
+                    <button type="submit" style="padding: 5px 10px; font-size: 0.8rem;">Actualizar</button>
                 </form>
             </li>
         <?php endforeach; ?>
