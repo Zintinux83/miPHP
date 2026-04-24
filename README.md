@@ -128,10 +128,60 @@ CREATE TABLE tareas (
 );
 ```
 ---
+### Todo eso hasta el commit: 260423_1423_WriteAREADMEAndAnInputToDeleteATask
+---
 ### Filtro y Gestión Individual
 Lo siquiente que voy a realizar va a ser:
 
 1. En la lista de usuarios, aparezca un enlace que diga "Ver Tareas".
-2. Al hacer clic, la página se "filtre" y te enseñe solo lo que ese usuario tiene pendiente.
-3. Añadiremos el botón de Eliminar tarea para practicar el borrado.
+2. Al hacer clic, la página se "filtre" y enseñe solo lo que ese usuario tiene pendiente.
+3. Botón de Eliminar tarea para practicar el borrado.
+---
+Ahora me estoy centrando en crear un modelo de MVC pleno, con todas sus partes.
+Para eso lo que voy a hacer a continuación es crear un servicio para cada entidad y separar la lógica de gestión en controladores separados para las 2 entidades.
+---
+## ¿Comó funciona el MVC o Modelo-Vista-Controlador?
+## 🛡️ Arquitectura y el "Filtro de Calidad" del Dato
 
+En este proyecto no solo muevo datos de un lado a otro; he implementado una estructura donde cada componente actúa como una barrera de seguridad para garantizar la integridad del sistema.
+
+### El Flujo de Trabajo (Caso Práctico)
+
+Imagina que un usuario intenta registrar un nombre vacío o con solo espacios: `"   "`.
+
+1.  **Vista (El Usuario):** Envía el dato desde el formulario.
+2.  **Controlador (El Gestor):** Recibe la petición y delega: *"He recibido algo en el registro, se lo paso al Servicio de Usuarios"*.
+3.  **Servicio (El Validador):** Aquí ocurre la "magia". El servicio analiza el dato:
+    > 🛑 *"¡Alto! Esto son solo espacios en blanco. Si se lo doy al modelo, ensuciaremos la base de datos. Petición denegada"*.
+
+    *Si el dato fuera `"Juan"`, el Servicio diría:* ✅ *"Perfecto, este dato es válido y está limpio. Adelante, Modelo"*.
+4.  **Modelo (El Ejecutor):** Recibe el dato ya validado y ejecuta la acción con total confianza: `INSERT INTO usuarios...`. Sabe que no va a romper nada porque el **Servicio** ya hizo el trabajo sucio.
+
+
+
+---
+
+### 🚀 ¿Por qué es vital esta validación intermedia?
+
+He decidido separar la lógica en una capa de **Servicios** por tres razones fundamentales:
+
+* **🗑️ Evitar "Basura" en la DB:** Sin el servicio, la base de datos se llenaría de nombres vacíos, tareas sin descripción o registros huérfanos. El Servicio garantiza que solo entre información de calidad.
+* **🔐 Seguridad:** El Servicio es el lugar ideal para verificar si el usuario tiene permisos o para limpiar el texto antes de procesarlo, protegiendo al Modelo de datos malintencionados.
+* **🏗️ Independencia (Escalabilidad):** Mi lógica de negocio (Servicio) y mi navegación (Controlador) son independientes de la base de datos. Si en el futuro cambio de MySQL a MongoDB, **no tengo que tocar las validaciones**, solo cambio el Modelo.
+
+---
+
+### Un resumen visual de responsabilidades:
+
+| Capa | Rol | Acción Principal |
+| :--- | :--- | :--- |
+| **Vista** | Interfaz | Recoger la intención del usuario. |
+| **Controlador** | Director | Coordinar quién debe procesar la información. |
+| **Servicio** | Aduana | Validar, limpiar y aplicar reglas de negocio. |
+| **Modelo** | Bibliotecario | Escribir o leer en la base de datos de forma segura. |
+
+---
+### Todo eso hasta el commit: feat: implementar una arquitectura MVC totalmente funcional y completa
+Ahora para ser más profesional, ya que la fecha es algo que se incluye en el commit y se hace redundante ponerlo, entonces voy a poner solo un prefijo y una descripción en imperativo y en minúsculas para mantener claro lo que hice y que cambios hay en este commit.
+
+---

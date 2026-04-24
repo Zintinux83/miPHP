@@ -3,34 +3,25 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
+// Importamos las cosas
+use App\Controllers\UsuarioController;
+use App\Controllers\TareaController;
 use App\Models\Usuario;
 use App\Models\Tarea;
 
-// --- LÓGICA DE PROCESAMIENTO ---
+// Inicializamos los controladores
+$userCtrl = new UsuarioController();
+$tareaCtrl = new TareaController();
 
+// --- LÓGICA DE PROCESAMIENTO (Delegada) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Si enviamos el formulario de USUARIO
-    if (isset($_POST['nombre_usuario'])) {
-        Usuario::crear($_POST['nombre_usuario']);
-    }
-
-    // Sí enviamos el formulario de TAREA
-    if (isset($_POST['tarea_desc']) && isset($_POST['id_usuario'])) {
-        Tarea::crear($_POST['tarea_desc'], $_POST['id_usuario']);
-    }
-
-    if (isset($_POST['eliminar_id'])) {
-        Tarea::eliminar($_POST['eliminar_id']);
-        header("Location: index.php");
-        exit;
-    }
-
-    header("Location: index.php");
-    exit;
+    $userCtrl->guardar($_POST);
+    $tareaCtrl->procesarPost($_POST);
 }
 
+// --- PREPARACIÓN DE DATOS PARA LA VISTA de usuario_tareas.php ---
 $listaUsuarios = Usuario::leerTodos();
-$listaTareas = Tarea::leerTodas(); // Esto traerá todas las tareas de la tabla
+$listaTareas = Tarea::leerTodas();
 
 $usuarioSeleccionado = $_GET['ver_usuario'] ?? null;
 
@@ -41,6 +32,7 @@ if ($usuarioSeleccionado) {
     $listaTareas = Tarea::leerTodas();
     $nombreVista = "Listado General de Tareas";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -54,12 +46,15 @@ if ($usuarioSeleccionado) {
         .tarea-item { background: #f9f9f9; padding: 10px; margin: 5px 0; border-left: 4px solid #3498db; }
     </style>
 </head>
+
 <body>
 
 <div class="seccion">
     <h2>1. Crear Usuario</h2>
     <form method="POST">
-        <input type="text" name="nombre_usuario" placeholder="Nombre del usuario..." required>
+        <label>
+            <input type="text" name="nombre_usuario" minlength="3" maxlength="20" placeholder="Nombre del usuario..." required>
+        </label>
         <button type="submit">Guardar Usuario</button>
     </form>
 </div>
@@ -76,14 +71,18 @@ if ($usuarioSeleccionado) {
 <div class="seccion">
     <h2>2. Asignar Tarea a Usuario</h2>
     <form method="POST">
-        <input type="text" name="tarea_desc" placeholder="¿Qué hay que hacer?" required>
+        <label>
+            <input type="text" name="tarea_desc" minlength="3" maxlength="30" placeholder="¿Qué hay que hacer?" required>
+        </label>
 
-        <select name="id_usuario" required>
-            <option value="">Selecciona un responsable...</option>
-            <?php foreach ($listaUsuarios as $u): ?>
-                <option value="<?= $u['id'] ?>"><?= htmlspecialchars($u['nombre']) ?></option>
-            <?php endforeach; ?>
-        </select>
+        <label>
+            <select name="id_usuario" required>
+                <option value="">Selecciona un responsable...</option>
+                <?php foreach ($listaUsuarios as $u): ?>
+                    <option value="<?= $u['id'] ?>"><?= htmlspecialchars($u['nombre']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
 
         <button type="submit">Crear Tarea</button>
     </form>
@@ -92,7 +91,7 @@ if ($usuarioSeleccionado) {
 <hr>
 
 <div class="seccion">
-    <h2>Listado General de Tareas</h2>
+    <h2><?= $nombreVista ?></h2>
     <?php if (empty($listaTareas)): ?>
         <p>No hay tareas pendientes.</p>
     <?php else: ?>
@@ -106,7 +105,7 @@ if ($usuarioSeleccionado) {
 </div>
 
 <div class="seccion">
-    <h2><?= $nombreVista ?></h2>
+    <h2><?= $nombreVista ?> para borrar</h2>
     <?php if ($usuarioSeleccionado): ?>
         <a href="index.php">⬅ Ver todas las tareas</a>
     <?php endif; ?>
@@ -128,17 +127,17 @@ if ($usuarioSeleccionado) {
         <?php endforeach; ?>
     </div>
 
-    <!--
+
     <h2>Usuarios registrados (Haz clic para filtrar):</h2>
     <ul>
         <?php foreach ($listaUsuarios as $u): ?>
             <li>
                 <?= htmlspecialchars($u['nombre']) ?>
-                <a href="index.php?ver_usuario=<?= $u['id'] ?>">[Ver sus tareas]</a>
+                <a href="usuario_tareas.php?id=<?= $u['id'] ?>">[Ver sus tareas]</a>
             </li>
         <?php endforeach; ?>
     </ul>
-    -->
+
 <div>
 
 </body>

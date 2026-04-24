@@ -37,11 +37,10 @@ class Tarea {
         $stmt = $db->prepare("DELETE FROM tareas WHERE id = ?");
         return $stmt->execute([$id]);
     }
-
     public static function buscarPorUsuario($usuarioId): array
     {
         $db = Connection::get();
-        $stmt = $db->prepare("SELECT * FROM tareas WHERE usuario_id = ?");
+        $stmt = $db->prepare("SELECT * FROM tareas WHERE usuario_id = ? ORDER BY creado_en DESC");
         $stmt->execute([$usuarioId]);
         return $stmt->fetchAll();
     }

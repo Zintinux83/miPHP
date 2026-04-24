@@ -12,7 +12,8 @@ class Usuario {
         return $stmt->fetchAll();
     }
 
-    public static function crear(string $nombre) {
+    public static function crear(string $nombre): bool
+    {
         $db = Connection::get();
 
         // 1. Preparamos la consulta con un "placeholder" (?) o (:nombre)
