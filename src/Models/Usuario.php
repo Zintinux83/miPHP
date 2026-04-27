@@ -5,24 +5,25 @@ use App\Database\Connection;
 
 class Usuario {
 
+    public static function crear($nombre, $rolId): bool
+    {
+        $db = Connection::get();
+        // Añadimos rol_id a la consulta
+        $stmt = $db->prepare("INSERT INTO usuarios (nombre, rol_id) VALUES (?, ?)");
+        return $stmt->execute([$nombre, $rolId]);
+    }
+
     public static function leerTodos(): array
     {
         $db = Connection::get();
-        $stmt = $db->query("SELECT * FROM usuarios");
-        return $stmt->fetchAll();
-    }
+        // Usamos LEFT JOIN para traer el nombre del rol.
+        // Si un usuario no tiene rol, aparecerá como NULL pero no romperá la página.
+        $sql = "SELECT usuarios.*, roles.nombre AS nombre_rol 
+            FROM usuarios 
+            LEFT JOIN roles ON usuarios.rol_id = roles.id 
+            ORDER BY usuarios.id DESC";
 
-    public static function crear(string $nombre): bool
-    {
-        $db = Connection::get();
-
-        // 1. Preparamos la consulta con un "placeholder" (?) o (:nombre)
-        $sql = "INSERT INTO usuarios (nombre) VALUES (:nom)";
-        $stmt = $db->prepare($sql);
-
-        // 2. Ejecutamos pasando los datos por separado
-        // Esto limpia el string y evita ataques SQL Injection
-        return $stmt->execute(['nom' => $nombre]);
+        return $db->query($sql)->fetchAll();
     }
 
     public static function actualizarFoto(int $id, string $rutaImagen): bool
@@ -30,5 +31,13 @@ class Usuario {
         $db = Connection::get();
         $stmt = $db->prepare("UPDATE usuarios SET foto_perfil = ? WHERE id = ?");
         return $stmt->execute([$rutaImagen, $id]);
+    }
+
+    public static function actualizarRol($idUsuario, $nuevoRolId): bool
+    {
+        $db = Connection::get();
+        // Preparamos la sentencia para cambiar el rol de un usuario específico
+        $stmt = $db->prepare("UPDATE usuarios SET rol_id = ? WHERE id = ?");
+        return $stmt->execute([$nuevoRolId, $idUsuario]);
     }
 }

@@ -1,17 +1,23 @@
 /* 1. VARIABLES Y RESET ######################## */
 :root {
-    --primary: #4f46e5;       /* Índigo moderno */
+    --primary: #4f46e5;
     --primary-hover: #4338ca;
-    --bg-body: #e0e8f4;       /* Gris neutro muy limpio */
+    --secondary: #3498db;
+    --bg-body: #e0e8f4;
     --bg-card: #ffffff;
     --text-main: #1e293b;
     --text-muted: #64748b;
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
     --radius: 12px;
+    --radius-sm: 8px;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -23,10 +29,9 @@ body {
     line-height: 1.5;
 }
 
-/* 2. HEADER COMPACTO (SLIM) ######################## */
+/* 2. HEADER COMPACTO ######################## */
 .header-wrapper {
     margin-bottom: 30px;
-    position: relative;
 }
 
 .header-container {
@@ -39,7 +44,6 @@ body {
 }
 
 .main-title {
-    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +86,7 @@ body {
     margin-top: 5px;
 }
 
-/* 3. CONTENEDORES Y SECCIONES ######################## */
+/* 3. SECCIONES Y FORMULARIOS GENERALES ######################## */
 .seccion {
     background: var(--bg-card);
     padding: 24px;
@@ -94,14 +98,12 @@ body {
 
 h2 {
     font-size: 1.25rem;
-    margin-top: 0;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* 4. FORMULARIOS E INPUTS ######################## */
 form {
     display: flex;
     gap: 12px;
@@ -113,15 +115,15 @@ input[type="text"], select {
     min-width: 200px;
     padding: 10px 14px;
     border: 1px solid #cbd5e1;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 0.95rem;
     transition: all 0.2s;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus, select:focus {
     outline: none;
     border-color: var(--primary);
-    ring: 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 button {
@@ -129,7 +131,7 @@ button {
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
@@ -139,55 +141,83 @@ button:hover {
     background-color: var(--primary-hover);
 }
 
-/* Botón de borrar */
-button[onclick*="confirm"] {
-    background-color: #ef4444;
-    padding: 6px 12px;
-    font-size: 0.85rem;
+/* 4. TARJETAS DE USUARIO (MÓDULO NUEVO) ######################## */
+.user-list {
+    list-style: none;
+    display: grid;
+    gap: 15px;
 }
 
-button[onclick*="confirm"]:hover {
-    background-color: #dc2626;
+.user-card {
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: var(--radius);
+    padding: 15px;
+    transition: all 0.3s ease;
+    scroll-margin-top: 50px; /* Para el ancla */
 }
 
-/* 5. LISTADOS (USUARIOS Y TAREAS) ######################## */
-ul { padding: 0; margin: 0; }
+/* Efecto cuando seleccionamos un usuario (Ancla) */
+.user-card:target {
+    border-color: var(--secondary);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+    background-color: #f0f7ff;
+    animation: highlight-card 2s ease-out;
+}
 
-li {
-    background: #f8f9fa;
+@keyframes highlight-card {
+    0% { background-color: #fff9c4; }
+    100% { background-color: #f0f7ff; }
+}
+
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 12px;
-    padding: 10px 18px;
-    border-radius: 12px;
-    display: flex;       /* La magia ocurre aquí */
-    align-items: center; /* Alinea verticalmente al centro */
-    gap: 15px;           /* Espacio entre elementos */
-    border: 1px solid #eef2f6;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 10px;
 }
 
-/* Para que el nombre del usuario crezca y empuje el formulario al final */
-.user-info {
+.user-main-info {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex: 1;
 }
 
-/* Ajuste específico para el formulario de foto dentro del li */
-li form {
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary);
+}
+
+.text-info strong {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.role-badge {
+    font-size: 0.7rem;
+    color: #fff;
+    background: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.user-actions {
     display: flex;
+    gap: 15px;
     align-items: center;
-    gap: 8px;
-    margin: 0; /* Quita márgenes que puedan romper la línea */
+    flex-wrap: wrap;
 }
 
-/* Hacer el input de archivo más discreto */
-li input[type="file"] {
-    font-size: 0.8rem;
-    max-width: 180px;
-}
-
+/* 5. TAREAS Y OTROS ELEMENTOS ######################## */
 .tarea-item {
-    background: var(--bg-card);
+    background: #f8fafc;
     border: 1px solid #e2e8f0;
     padding: 16px;
     border-radius: var(--radius);
@@ -195,33 +225,86 @@ li input[type="file"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: transform 0.2s;
+    transition: all 0.2s;
 }
 
 .tarea-item:hover {
     transform: translateX(4px);
     border-color: var(--primary);
+    background: white;
 }
 
-/* 6. IMÁGENES Y OTROS ######################## */
-img {
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid white;
-    box-shadow: var(--shadow-sm);
-}
-
-a {
-    color: var(--primary);
+.btn-tasks {
+    font-size: 0.85rem;
+    color: var(--secondary);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-a:hover { text-decoration: underline; }
+.btn-tasks:hover { text-decoration: underline; }
 
-.empty-state {
+.select-minimal {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    font-size: 0.85rem;
+    min-width: 150px;
+}
+
+.custom-file-upload {
+    font-size: 0.8rem;
+    cursor: pointer;
     color: var(--text-muted);
-    text-align: center;
-    font-style: italic;
-    padding: 20px;
+    background: #f1f5f9;
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.custom-file-upload:hover {
+    background: #e2e8f0;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+/* Botón de borrar (Rojo) */
+button[onclick*="confirm"] {
+    background-color: #ef4444;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+}
+
+button[onclick*="confirm"]:hover {
+    background-color: #dc2626;
+}
+
+/* 6. IMÁGENES Y AVATARES ######################## */
+
+/* Regla general para evitar que cualquier imagen desborde */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* El avatar del usuario (Círculo pequeño) */
+.profile-img {
+    width: 50px !important;  /* Forzamos el tamaño para que no crezca */
+    height: 50px !important;
+    min-width: 50px;         /* Evita que se aplaste en pantallas pequeñas */
+    min-height: 50px;
+    border-radius: 50%;
+    object-fit: cover;       /* Importante: recorta la foto para que siempre sea un círculo */
+    border: 2px solid var(--secondary);
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;          /* Evita que el flexbox la comprima */
+}
+
+/* El contenedor que envuelve la imagen y el texto */
+.user-main-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

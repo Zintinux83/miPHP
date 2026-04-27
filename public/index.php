@@ -1,32 +1,37 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\Models\Usuario;
+use App\Models\Rol;
+use App\Models\Tarea;
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-use App\Controllers\UsuarioController;
-use App\Controllers\TareaController;
-use App\Models\Usuario;
-use App\Models\Tarea;
+Rol::sembrar();
 
-$userCtrl = new UsuarioController();
-$tareaCtrl = new TareaController();
-
-// --- 1. LÓGICA DE PROCESAMIENTO (Todo el POST aquí arriba) ---
+// 1. TODA LA LÓGICA DE POST (Procesar antes de mostrar nada)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Caso A: Subida de foto
-    if (isset($_POST['id_usuario_foto']) && isset($_FILES['foto'])) {
-        $userCtrl->subirFoto($_POST['id_usuario_foto'], $_FILES['foto']);
+
+    //crear Usuario
+    if (($_POST['accion'] ?? '') === 'crear_usuario') {
+        Usuario::crear($_POST['nombre'], $_POST['rol_id']);
+        header('Location: index.php');
+        exit;
     }
 
-    // Caso B: Otros procesos (Guardar usuario o procesar tareas)
-    $userCtrl->guardar($_POST);
-    $tareaCtrl->procesarPost($_POST);
+    // Actualizar Rol
+    if (($_POST['accion'] ?? '') === 'actualizar_rol') {
+        $rolController = new \App\Controllers\RolController();
+        $rolController->procesarCambioRol($_POST);
+    }
 }
 
-// --- 2. PREPARAR DATOS PARA LA VISTA ---
+// 2. LÓGICA DE GET (Preparar los datos para la vista)
 $listaUsuarios = Usuario::leerTodos();
-$listaTareas = Tarea::leerTodas();
-$nombreVista = "Listado General de Tareas";
+$listaRoles    = Rol::leerTodos();
+$listaTareas   = Tarea::leerTodas();
+$nombreVista   = "Panel de Control";
 
-// --- 3. CARGAR LA VISTA ---
-include __DIR__ . '/../src/views/home.view.php';
+// 3. POR ÚLTIMO, LLAMAR A LA VISTA
+require_once __DIR__ . '/../src/views/home.view.php';

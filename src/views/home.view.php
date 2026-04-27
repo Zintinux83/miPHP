@@ -1,6 +1,7 @@
 <?php
 /** @var array $listaUsuarios */
 /** @var array $listaTareas */
+/** @var array $listaRoles */
 /** @var string $nombreVista */
 ?>
 
@@ -23,48 +24,70 @@
             <div class="title-text">
                 Gestión de <span class="highlight">Tareas</span>
             </div>
-            <span class="subtitle">Control Panel v2.0 • MVC Architecture</span>
+            <span class="subtitle"> Modelo de MVC </span>
         </h1>
     </div>
 </div>
 
 <div class="seccion">
     <h2>1. Crear Usuario</h2>
-    <form method="POST">
-        <input type="text" name="nombre_usuario" minlength="3" maxlength="20" placeholder="Nombre..." required>
-        <button type="submit">Guardar Usuario</button>
+    <form action="index.php" method="POST">
+        <input type="hidden" name="accion" value="crear_usuario">
+
+        <input type="text" name="nombre" placeholder="Nombre del usuario" required>
+
+        <select name="rol_id" required>
+            <option value="">Selecciona un rol</option>
+            <?php foreach ($listaRoles as $rol): ?>
+                <option value="<?= $rol['id'] ?>"><?= ucfirst($rol['nombre']) ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <button type="submit">Crear Usuario</button>
     </form>
 </div>
 
-<div class="seccion">
+<div class="seccion" id="usuarios">
     <h2>Usuarios registrados</h2>
-    <ul>
-        <?php foreach ($listaUsuarios as $u): ?>
-            <li>
-                <div class="user-info">
-                    <img src="uploads/perfiles/<?= $u['foto_perfil'] ?? 'default.png' ?>"
-                         width="40" height="40" alt="Perfil">
-                    <strong><?= htmlspecialchars($u['nombre']) ?></strong>
-                    <a href="usuario_tareas.php?id=<?= $u['id'] ?>" class="btn-link">[Ver tareas]</a>
+    <ul class="user-list"> <?php foreach ($listaUsuarios as $u): ?>
+            <li id="user-<?= $u['id'] ?>" class="user-card">
+
+                <div class="user-header">
+                    <div class="user-main-info">
+                        <img src="uploads/perfiles/<?= $u['foto_perfil'] ?? 'default.png' ?>"
+                             class="profile-img"
+                             style="width: 50px !important; height: 50px !important; border-radius: 50%; object-fit: cover;"
+                             alt="Perfil">
+                        <div class="text-info">
+                            <strong><?= htmlspecialchars($u['nombre']) ?></strong>
+                            <span class="role-badge"><?= htmlspecialchars($u['nombre_rol'] ?? 'Sin cargo') ?></span>
+                        </div>
+                    </div>
+                    <a href="usuario_tareas.php?id=<?= $u['id'] ?>" class="btn-tasks">Ver tareas</a>
                 </div>
 
-                <form method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id_usuario_foto" value="<?= $u['id'] ?>">
-                    <input type="file" name="foto" required>
-                    <button type="submit" style="padding: 5px 10px; font-size: 0.8rem;">Actualizar</button>
-                </form>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-</div>
+                <div class="user-actions">
+                    <form method="POST" class="form-inline">
+                        <input type="hidden" name="accion" value="actualizar_rol">
+                        <input type="hidden" name="id_usuario" value="<?= $u['id'] ?>">
+                        <select name="nuevo_rol_id" onchange="this.form.submit()" class="select-minimal">
+                            <option value="">Cambiar cargo...</option>
+                            <?php foreach ($listaRoles as $rol): ?>
+                                <option value="<?= $rol['id'] ?>" <?= ($u['rol_id'] == $rol['id']) ? 'selected' : '' ?>>
+                                    <?= ucfirst($rol['nombre']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </form>
 
-<div class="seccion">
-    <h2>Usuarios registrados:</h2>
-    <ul>
-        <?php foreach ($listaUsuarios as $u): ?>
-            <li>
-                <?= htmlspecialchars($u['nombre']) ?>
-                <a href="usuario_tareas.php?id=<?= $u['id'] ?>">[Ver tareas]</a>
+                    <form method="POST" enctype="multipart/form-data" class="form-photo">
+                        <input type="hidden" name="id_usuario_foto" value="<?= $u['id'] ?>">
+                        <label class="custom-file-upload">
+                            <input type="file" name="foto" onchange="this.form.submit()" required>
+                            📷 Actualizar foto
+                        </label>
+                    </form>
+                </div>
             </li>
         <?php endforeach; ?>
     </ul>
