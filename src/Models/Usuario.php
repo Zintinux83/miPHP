@@ -5,6 +5,40 @@ use App\Database\Connection;
 
 class Usuario {
 
+    public static function sembrar(): void
+    {
+        $db = Connection::get();
+
+        // 1. Crear tabla usuarios si no existe
+        // Asegúrate de que los nombres de las columnas coincidan con el resto de tu app
+        $sql = "CREATE TABLE IF NOT EXISTS usuarios (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(100) NOT NULL,
+        foto_perfil VARCHAR(255) DEFAULT NULL,
+        rol_id INT DEFAULT NULL,
+        creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+        $db->exec($sql);
+
+        // definimos a los usuarios por defecto
+        $usuariosPre = [
+            ['nombre' => 'Admin 1', 'rol_id' => 2],
+            ['nombre' => 'Jefe 1', 'rol_id' => 1]
+        ];
+
+        foreach ($usuariosPre as $u) {
+            // Buscamos si ya existe un usuario con ese nombre
+            $stmt = $db->prepare("SELECT id FROM usuarios WHERE nombre = ?");
+            $stmt->execute([$u['nombre']]);
+
+            // Si no encontramos nada (fetch devuelve false), lo creamos
+            if (!$stmt->fetch()) {
+                // Usamos el método crear que ya tienes definido en el modelo
+                self::crear($u['nombre'], $u['rol_id']);
+            }
+        }
+    }
+
     public static function crear($nombre, $rolId): bool
     {
         $db = Connection::get();

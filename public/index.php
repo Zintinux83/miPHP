@@ -9,6 +9,8 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 Rol::sembrar();
+Usuario::sembrar();
+Tarea::crearTabla();
 
 // 1. TODA LA LÓGICA DE POST (Procesar antes de mostrar nada)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

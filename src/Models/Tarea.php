@@ -5,6 +5,26 @@ use App\Database\Connection;
 
 class Tarea {
 
+    public static function crearTabla(): void
+    {
+        $db = Connection::get();
+
+        // Creamos la tabla con la relación al usuario_id
+        $sql = "CREATE TABLE IF NOT EXISTS tareas (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(255) NOT NULL,
+        completado TINYINT(1) DEFAULT 0,
+        usuario_id INT NOT NULL,
+        creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_usuario_tarea 
+            FOREIGN KEY (usuario_id) 
+            REFERENCES usuarios(id) 
+            ON DELETE CASCADE
+    )";
+
+        $db->exec($sql);
+    }
+
     public static function leerTodas(): array
     {
         $db = Connection::get();
